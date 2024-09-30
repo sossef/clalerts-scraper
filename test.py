@@ -5,38 +5,107 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
+import requests
+import time
+import random
+import re
+from datetime import datetime
 
-# Set up Selenium with Chrome WebDriver
-def extract_search_results_selenium(url):
-    chrome_options = Options()
-    chrome_options.add_argument("--headless")  # Optional: Run in headless mode
+chrome_options = Options()
+chrome_options.add_argument("--headless")
+driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
 
-    # Automatically detect and download the correct version of ChromeDriver
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+response = requests.get('http://localhost:8000/api/alert/list')
 
-    try:
-        # Load the webpage
-        driver.get(url)
+if response.status_code == 200:
+    # Parse JSON response data
+    scraping_list = response.json()['data']
+    
+    for url, alerts in scraping_list.items():
 
-        # Wait until the specific <li> elements with class "search-result" are present
-        wait = WebDriverWait(driver, 15)  # Wait for up to 15 seconds
-        search_results = wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'li.cl-search-result')))
+        print(f"URL: {url}")
+        
+        try:
+            driver.get(url)
+            wait = WebDriverWait(driver, 15)
+            search_results = wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'li.cl-search-result')))
 
-        # Extract and print the results
-        for index, result in enumerate(search_results, 1):
-            print(f"Result {index}:")
-            print(result.text)
-            print()
+            for alert in alerts:
 
-    except Exception as e:
-        print(f"Error occurred: {e}")
-        # Print the page source to debug if necessary
-        print(driver.page_source)
+                print(f"KEYWORDS: {alert['keywords']}")
 
-    finally:
-        # Close the browser
-        driver.quit()
+                keywords = re.split(r',\s*', alert['keywords'])
+                
+                for index, result in enumerate(search_results, 1):
 
-# Example usage
-url = 'https://miami.craigslist.org/search/sof'
-extract_search_results_selenium(url)
+                    if any(keyword.lower() in result.text.lower() for keyword in keywords):
+
+                        #print(result.get_attribute('outerHTML'))
+
+                        temp = result.text.replace('\n', ' - ')
+
+                        title = result.get_attribute('title')
+                        url = result.find_element(By.CSS_SELECTOR, 'a').get_attribute('href')
+                        has_pic = 1 if len(result.find_elements(By.CSS_SELECTOR, 'img')) > 0 else 0
+
+                        try:
+                            price = result.find_element(By.CSS_SELECTOR, 'span.priceinfo').text.replace('$', '').replace(',', '')
+                        except:
+                            price = None
+
+                        clid = result.get_attribute('data-pid')
+                        alert_id = alert['id']
+
+                        pattern = r'\b(0?[1-9]|1[0-2])/([1-9]|[12][0-9]|3[01])\b'
+                        current_year = datetime.now().year
+                        match = re.search(pattern, result.text)
+                        if match:
+                            month = int(match.group(1))
+                            day = int(match.group(2))
+                            date_obj = datetime(year=current_year, month=month, day=day)
+                            date_posted = date_obj.strftime('%Y-%m-%d %H:%M:%S')
+                        else:
+                            date_posted = None
+
+                        post_data = {
+                            'title': temp,
+                            'url': url,
+                            'has_pic': has_pic,
+                            'clid': clid,
+                            'alert_id': alert_id
+                        }
+
+                        if price is not None:
+                            post_data['price'] = price
+
+                        if date_posted is not None:
+                            post_data['date_posted'] = date_posted
+
+                        #print(post_data)                        
+
+                        post_response = requests.post('http://localhost:8000/api/post', json=post_data)
+                        if post_response.status_code == 200 or post_response.status_code == 201:
+                            data = post_response.json()
+                            print(f"Post created: {data}")
+                        else:
+                            print(f"Failed to create post. Status code: {post_response.status_code}")
+                            print(post_response)
+
+        except Exception as e:
+            print(f"Error occurred: {e}")
+            #print(driver.page_source)
+
+        finally:
+            driver.quit()
+
+        # Sleep for a random amount of time between 1 and 10 seconds
+        sleep_time = random.randint(1, 10)
+        print(f"Sleeping for {sleep_time} seconds before processing the next URL...")
+        time.sleep(sleep_time)
+        
+else:
+    print(f"Failed to retrieve data. Status code: {response.status_code}")
+
+# Loop through each item (dictionary) in the list
+    #for item in items:
+        #print(f"ID: {item['id']}, Name: {item['name']}, Keywords: {item['keywords']}, Price Range: {item['min_price']} - {item['max_price']}")
