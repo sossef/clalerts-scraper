@@ -11,11 +11,13 @@ import random
 import re
 from datetime import datetime
 
+apiBaseUrl = 'http://localhost:8000/api'
+
 chrome_options = Options()
 chrome_options.add_argument("--headless")
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
 
-response = requests.get('http://localhost:8000/api/alert/list')
+response = requests.get(f"{apiBaseUrl}/alert/list")
 
 if response.status_code == 200:
     # Parse JSON response data
@@ -39,10 +41,6 @@ if response.status_code == 200:
                 for index, result in enumerate(search_results, 1):
 
                     if any(keyword.lower() in result.text.lower() for keyword in keywords):
-
-                        #print(result.get_attribute('outerHTML'))
-
-                        temp = result.text.replace('\n', ' - ')
 
                         title = result.get_attribute('title')
                         url = result.find_element(By.CSS_SELECTOR, 'a').get_attribute('href')
@@ -68,7 +66,7 @@ if response.status_code == 200:
                             date_posted = None
 
                         post_data = {
-                            'title': temp,
+                            'title': title,
                             'url': url,
                             'has_pic': has_pic,
                             'clid': clid,
@@ -81,9 +79,7 @@ if response.status_code == 200:
                         if date_posted is not None:
                             post_data['date_posted'] = date_posted
 
-                        #print(post_data)                        
-
-                        post_response = requests.post('http://localhost:8000/api/post', json=post_data)
+                        post_response = requests.post(f"{apiBaseUrl}/post", json=post_data)
                         if post_response.status_code == 200 or post_response.status_code == 201:
                             data = post_response.json()
                             print(f"Post created: {data}")
@@ -98,14 +94,9 @@ if response.status_code == 200:
         finally:
             driver.quit()
 
-        # Sleep for a random amount of time between 1 and 10 seconds
         sleep_time = random.randint(1, 10)
         print(f"Sleeping for {sleep_time} seconds before processing the next URL...")
         time.sleep(sleep_time)
         
 else:
     print(f"Failed to retrieve data. Status code: {response.status_code}")
-
-# Loop through each item (dictionary) in the list
-    #for item in items:
-        #print(f"ID: {item['id']}, Name: {item['name']}, Keywords: {item['keywords']}, Price Range: {item['min_price']} - {item['max_price']}")
