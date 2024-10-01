@@ -11,6 +11,23 @@ import random
 import re
 from datetime import datetime
 
+def include_result(alert, result): 
+
+    if alert['has_pic'] == 1 and result['has_pic'] != 1:
+        return False
+    
+    # Include all items without price
+    if result['price'] is not None:
+        if alert['min_price'] is not None and result['price'] < float(alert['min_price']):
+            return False
+        if alert['max_price'] is not None and result['price'] > float(alert['max_price']):
+            return False
+        
+    keywords = re.split(r',\s*', alert['keywords'])
+
+    return True if any(keyword.lower() in result['web_element'].text.lower() for keyword in keywords) else False
+
+
 apiBaseUrl = 'http://localhost:8000/api'
 
 chrome_options = Options()
@@ -20,8 +37,8 @@ driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), opti
 response = requests.get(f"{apiBaseUrl}/alert/list")
 
 if response.status_code == 200:
-    # Parse JSON response data
-    scraping_list = response.json()['data']
+
+    scraping_list = response.json().get('data', {})
 
     try:
     
@@ -42,17 +59,23 @@ if response.status_code == 200:
                     
                     for index, result in enumerate(search_results, 1):
 
-                        if any(keyword.lower() in result.text.lower() for keyword in keywords):
+                        has_pic = 1 if len(result.find_elements(By.CSS_SELECTOR, 'img')) > 0 else 0
+
+                        try:
+                            price = float(result.find_element(By.CSS_SELECTOR, 'span.priceinfo').text.replace('$', '').replace(',', ''))
+                        except:
+                            price = None
+
+                        search_result = {
+                            'web_element': result,
+                            'has_pic': has_pic,
+                            'price': price
+                        }
+                        
+                        if include_result(alert, search_result):                               
 
                             title = result.get_attribute('title')
                             url = result.find_element(By.CSS_SELECTOR, 'a').get_attribute('href')
-                            has_pic = 1 if len(result.find_elements(By.CSS_SELECTOR, 'img')) > 0 else 0
-
-                            try:
-                                price = result.find_element(By.CSS_SELECTOR, 'span.priceinfo').text.replace('$', '').replace(',', '')
-                            except:
-                                price = None
-
                             clid = result.get_attribute('data-pid')
                             alert_id = alert['id']
 
