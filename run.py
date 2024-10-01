@@ -16,7 +16,7 @@ if scraping_list:
 
         for url, alerts in scraping_list.items():
 
-            print(f"URL: {url}")
+            print(f"Fetching page from: {url}")
 
             clscraper.wait()
 
