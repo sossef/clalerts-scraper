@@ -4,7 +4,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from datetime import datetime
 import time
 import random
-import requests
 import re
 import config
 
@@ -12,13 +11,6 @@ def wait():
     sleep_time = random.randint(1, 10)
     print(f"Sleeping for {sleep_time} seconds before processing the next URL...")
     time.sleep(sleep_time)
-
-def fetch_scraping_list():
-    response = requests.get(f"{config.API_BASE_URL}/alert/list")
-    if response.status_code == 200:
-        return response.json().get('data', {})
-    print(f"Failed to retrieve data. Status code: {response.status_code}")
-    return None
 
 def scrape_page(driver, url):
     try:
@@ -40,15 +32,6 @@ def extract_date_posted(text):
         return date_obj.strftime('%Y-%m-%d %H:%M:%S')
     else:
         return None
-
-def post_result(post_data):
-    post_response = requests.post(f"{config.API_BASE_URL}/post", json=post_data)
-    if post_response.status_code == 200 or post_response.status_code == 201:
-        data = post_response.json()
-        print(f"Post created: {data}")
-    else:
-        print(f"Failed to create post. Status code: {post_response.status_code}")
-        print(post_response)
 
 def include_result(alert, result): 
 

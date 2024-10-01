@@ -3,9 +3,9 @@ from selenium.webdriver.chrome.options import Options
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 
-import clscraper
+import clscraper, api
 
-scraping_list = clscraper.fetch_scraping_list()
+scraping_list = api.fetch_scraping_list()
 
 if scraping_list:
 
@@ -34,7 +34,7 @@ if scraping_list:
                         
                         if clscraper.include_result(alert, search_result):  
 
-                            clscraper.post_result(clscraper.prepare_post(alert, search_result))
+                            api.post_result(clscraper.prepare_post(alert, search_result))
 
 else:
     print('No alerts to process.')            
