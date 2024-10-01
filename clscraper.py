@@ -1,35 +1,30 @@
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
-import requests
+from datetime import datetime
 import time
 import random
+import requests
 import re
-from datetime import datetime
+import config
 
-API_BASE_URL = 'http://localhost:8000/api'
-CSS_SELECTOR_SEARCH_RESULT = 'li.cl-search-result'
-CSS_SELECTOR_PIC = 'img'
-CSS_SELECTOR_PRICE_INFO = 'span.priceinfo'
-DATE_PATTERN = r'\b(0?[1-9]|1[0-2])/([1-9]|[12][0-9]|3[01])\b'
+def wait():
+    sleep_time = random.randint(1, 10)
+    print(f"Sleeping for {sleep_time} seconds before processing the next URL...")
+    time.sleep(sleep_time)
 
 def fetch_scraping_list():
-    response = requests.get(f"{API_BASE_URL}/alert/list")
+    response = requests.get(f"{config.API_BASE_URL}/alert/list")
     if response.status_code == 200:
         return response.json().get('data', {})
     print(f"Failed to retrieve data. Status code: {response.status_code}")
     return None
 
-
-def scrape_page(url):
+def scrape_page(driver, url):
     try:
         driver.get(url)
         wait = WebDriverWait(driver, 15)
-        return wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, CSS_SELECTOR_SEARCH_RESULT)))
+        return wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, config.CSS_SELECTOR_SEARCH_RESULT)))
     except Exception as e:
         print(f"Error occurred: {e}")
         return None
@@ -37,7 +32,7 @@ def scrape_page(url):
 
 def extract_date_posted(text):
     current_year = datetime.now().year
-    match = re.search(DATE_PATTERN, text)
+    match = re.search(config.DATE_PATTERN, text)
     if match:
         month = int(match.group(1))
         day = int(match.group(2))
@@ -47,7 +42,7 @@ def extract_date_posted(text):
         return None
 
 def post_result(post_data):
-    post_response = requests.post(f"{API_BASE_URL}/post", json=post_data)
+    post_response = requests.post(f"{config.API_BASE_URL}/post", json=post_data)
     if post_response.status_code == 200 or post_response.status_code == 201:
         data = post_response.json()
         print(f"Post created: {data}")
@@ -95,10 +90,10 @@ def prepare_post(alert, result):
 
 def prepare_search_result(result):
 
-    has_pic = 1 if len(result.find_elements(By.CSS_SELECTOR, CSS_SELECTOR_PIC)) > 0 else 0
+    has_pic = 1 if len(result.find_elements(By.CSS_SELECTOR, config.CSS_SELECTOR_PIC)) > 0 else 0
 
     try:
-        price = float(result.find_element(By.CSS_SELECTOR, CSS_SELECTOR_PRICE_INFO).text.replace('$', '').replace(',', ''))
+        price = float(result.find_element(By.CSS_SELECTOR, config.CSS_SELECTOR_PRICE_INFO).text.replace('$', '').replace(',', ''))
     except:
         price = None
 
@@ -109,46 +104,3 @@ def prepare_search_result(result):
     }
 
     return search_result
-
-
-scraping_list = fetch_scraping_list()
-
-if scraping_list:
-
-    chrome_options = Options()
-    chrome_options.add_argument("--headless")
-
-    with webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options) as driver:
-
-        for url, alerts in scraping_list.items():
-
-            print(f"URL: {url}")
-
-            sleep_time = random.randint(1, 10)
-            print(f"Sleeping for {sleep_time} seconds before processing the next URL...")
-            time.sleep(sleep_time)
-
-            search_results = scrape_page(url)
-            
-            if search_results:
-
-                for alert in alerts:
-
-                    print(f"KEYWORDS: {alert['keywords']}")
-
-                    keywords = re.split(r',\s*', alert['keywords'])
-                    
-                    for index, result in enumerate(search_results, 1):
-
-                        search_result = prepare_search_result(result)
-                        
-                        if include_result(alert, search_result):  
-
-                            post_result(prepare_post(alert, search_result))
-
-            
-
-                        
-
-
-    

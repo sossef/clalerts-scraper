@@ -1,0 +1,5 @@
+API_BASE_URL = 'http://localhost:8000/api'
+CSS_SELECTOR_SEARCH_RESULT = 'li.cl-search-result'
+CSS_SELECTOR_PIC = 'img'
+CSS_SELECTOR_PRICE_INFO = 'span.priceinfo'
+DATE_PATTERN = r'\b(0?[1-9]|1[0-2])/([1-9]|[12][0-9]|3[01])\b'
