@@ -3,6 +3,10 @@ from selenium.webdriver.chrome.options import Options
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 
+import logging
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
 import clscraper, api
 
 scraping_list = api.fetch_scraping_list()
@@ -16,7 +20,7 @@ if scraping_list:
 
         for url, alerts in scraping_list.items():
 
-            print(f"Fetching page from: {url}")
+            logging.info(f"Fetching page from: {url}")
 
             clscraper.wait()
 
@@ -26,7 +30,7 @@ if scraping_list:
 
                 for alert in alerts:
 
-                    print(f"KEYWORDS: {alert['keywords']}")
+                    logging.info(f"Processing Alert ID: {alert['id']}. Name: '{alert['name']}'. Keywords: '{alert['keywords']}'. has_pic: {alert['has_pic']}. Price: [{alert['min_price']} - {alert['max_price']}]")
                     
                     for index, result in enumerate(search_results, 1):
 
@@ -37,7 +41,7 @@ if scraping_list:
                             api.post_result(clscraper.prepare_post(alert, search_result))
 
 else:
-    print('No alerts to process.')            
+    logging.info('No alerts to process.')            
 
                         
 

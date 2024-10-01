@@ -6,10 +6,13 @@ import time
 import random
 import re
 import config
+import logging
+
+logger = logging.getLogger(__name__)
 
 def wait():
     sleep_time = random.randint(1, 10)
-    print(f"Sleeping for {sleep_time} seconds before processing the next URL...")
+    logger.info(f"Sleeping for {sleep_time} seconds before processing...")
     time.sleep(sleep_time)
 
 def scrape_page(driver, url):
@@ -18,7 +21,7 @@ def scrape_page(driver, url):
         wait = WebDriverWait(driver, 15)
         return wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, config.CSS_SELECTOR_SEARCH_RESULT)))
     except Exception as e:
-        print(f"Error occurred: {e}")
+        logger.error(f"Scraping error occurred: {e}")
         return None
         #print(driver.page_source)
 
