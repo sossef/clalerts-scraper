@@ -20,7 +20,7 @@ logger.setLevel(logging_level)  # Set the global logging level
 console_handler = logging.StreamHandler()  # Logs to console
 console_handler.setLevel(logging_level)
 
-file_handler = TimedRotatingFileHandler('app.log', when='D', interval=1, backupCount=7)
+file_handler = TimedRotatingFileHandler('logs/app.log', when='D', interval=1, backupCount=7)
 file_handler.setLevel(logging_level)
 
 # Create a formatter and set it for both handlers
