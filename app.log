@@ -1,0 +1,67 @@
+2024-10-02 05:41:57,604 - api - INFO - Fetching latest alerts: GET http://localhost:8000/api/alert/list
+2024-10-02 05:41:57,609 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:8000
+2024-10-02 05:41:57,705 - urllib3.connectionpool - DEBUG - http://localhost:8000 "GET /api/alert/list HTTP/11" 200 None
+2024-10-02 05:41:57,720 - api - INFO - Fetch successful
+2024-10-02 05:41:57,720 - WDM - INFO - ====== WebDriver manager ======
+2024-10-02 05:41:57,907 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-10-02 05:41:57,910 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): googlechromelabs.github.io:443
+2024-10-02 05:41:58,118 - urllib3.connectionpool - DEBUG - https://googlechromelabs.github.io:443 "GET /chrome-for-testing/latest-patch-versions-per-build.json HTTP/11" 200 7527
+2024-10-02 05:41:58,123 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-10-02 05:41:58,125 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): googlechromelabs.github.io:443
+2024-10-02 05:41:58,323 - urllib3.connectionpool - DEBUG - https://googlechromelabs.github.io:443 "GET /chrome-for-testing/latest-patch-versions-per-build.json HTTP/11" 200 7527
+2024-10-02 05:41:58,328 - WDM - INFO - Driver [/home/monsef/.wdm/drivers/chromedriver/linux64/129.0.6668.89/chromedriver-linux64/chromedriver] found in cache
+2024-10-02 05:41:58,329 - selenium.webdriver.common.driver_finder - DEBUG - Skipping Selenium Manager; path to chrome driver specified in Service class: /home/monsef/.wdm/drivers/chromedriver/linux64/129.0.6668.89/chromedriver-linux64/chromedriver
+2024-10-02 05:41:58,332 - selenium.webdriver.common.service - DEBUG - Started executable: `/home/monsef/.wdm/drivers/chromedriver/linux64/129.0.6668.89/chromedriver-linux64/chromedriver` in a child process with pid: 18522 using 0 to output -3
+2024-10-02 05:41:58,404 - selenium.webdriver.remote.remote_connection - DEBUG - POST http://localhost:52089/session {'capabilities': {'firstMatch': [{}], 'alwaysMatch': {'browserName': 'chrome', 'pageLoadStrategy': <PageLoadStrategy.normal: 'normal'>, 'goog:chromeOptions': {'extensions': [], 'args': ['--headless']}}}}
+2024-10-02 05:41:58,406 - urllib3.connectionpool - DEBUG - Starting new HTTP connection (1): localhost:52089
+2024-10-02 05:41:58,983 - urllib3.connectionpool - DEBUG - http://localhost:52089 "POST /session HTTP/11" 200 0
+2024-10-02 05:41:58,984 - selenium.webdriver.remote.remote_connection - DEBUG - Remote response: status=200 | data={"value":{"capabilities":{"acceptInsecureCerts":false,"browserName":"chrome","browserVersion":"129.0.6668.70","chrome":{"chromedriverVersion":"129.0.6668.89 (951c0b97221f8d4ba37cf97d324505c832251cf9-refs/branch-heads/6668@{#1503})","userDataDir":"/tmp/.org.chromium.Chromium.Iish94"},"fedcm:accounts":true,"goog:chromeOptions":{"debuggerAddress":"localhost:38159"},"networkConnectionEnabled":false,"pageLoadStrategy":"normal","platformName":"linux","proxy":{},"setWindowRect":true,"strictFileInteractability":false,"timeouts":{"implicit":0,"pageLoad":300000,"script":30000},"unhandledPromptBehavior":"dismiss and notify","webauthn:extension:credBlob":true,"webauthn:extension:largeBlob":true,"webauthn:extension:minPinLength":true,"webauthn:extension:prf":true,"webauthn:virtualAuthenticators":true},"sessionId":"583d778312893b7a849c5e2ff78487b1"}} | headers=HTTPHeaderDict({'Content-Length': '848', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2024-10-02 05:41:58,984 - selenium.webdriver.remote.remote_connection - DEBUG - Finished Request
+2024-10-02 05:41:58,984 - __main__ - INFO - Fetching page from: https://miami.craigslist.org/search/msa
+2024-10-02 05:41:58,985 - selenium.webdriver.remote.remote_connection - DEBUG - DELETE http://localhost:52089/session/583d778312893b7a849c5e2ff78487b1 {}
+2024-10-02 05:41:59,089 - urllib3.connectionpool - DEBUG - http://localhost:52089 "DELETE /session/583d778312893b7a849c5e2ff78487b1 HTTP/11" 200 0
+2024-10-02 05:41:59,090 - selenium.webdriver.remote.remote_connection - DEBUG - Remote response: status=200 | data={"value":null} | headers=HTTPHeaderDict({'Content-Length': '14', 'Content-Type': 'application/json; charset=utf-8', 'cache-control': 'no-cache'})
+2024-10-02 05:41:59,091 - selenium.webdriver.remote.remote_connection - DEBUG - Finished Request
+2024-10-02 05:43:05,958 - api - INFO - Fetching latest alerts: GET http://localhost:8000/api/alert/list
+2024-10-02 05:43:06,027 - api - INFO - Fetch successful
+2024-10-02 05:43:06,028 - WDM - INFO - ====== WebDriver manager ======
+2024-10-02 05:43:06,155 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-10-02 05:43:06,390 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-10-02 05:43:06,589 - WDM - INFO - Driver [/home/monsef/.wdm/drivers/chromedriver/linux64/129.0.6668.89/chromedriver-linux64/chromedriver] found in cache
+2024-10-02 05:43:07,155 - __main__ - INFO - Fetching page from: https://miami.craigslist.org/search/msa
+2024-10-02 05:44:49,635 - __main__ - INFO -            
+2024-10-02 05:44:49,637 - api - INFO - Fetching latest alerts: GET http://localhost:8000/api/alert/list
+2024-10-02 05:44:49,743 - api - INFO - Fetch successful
+2024-10-02 05:44:49,744 - WDM - INFO - ====== WebDriver manager ======
+2024-10-02 05:44:49,861 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-10-02 05:44:50,066 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-10-02 05:44:50,256 - WDM - INFO - Driver [/home/monsef/.wdm/drivers/chromedriver/linux64/129.0.6668.89/chromedriver-linux64/chromedriver] found in cache
+2024-10-02 05:44:50,811 - __main__ - INFO - Fetching page from: https://miami.craigslist.org/search/msa
+2024-10-02 05:44:50,877 - __main__ - INFO -            
+2024-10-02 05:44:54,297 - __main__ - INFO -            
+2024-10-02 05:44:54,298 - api - INFO - Fetching latest alerts: GET http://localhost:8000/api/alert/list
+2024-10-02 05:44:54,371 - api - INFO - Fetch successful
+2024-10-02 05:44:54,372 - WDM - INFO - ====== WebDriver manager ======
+2024-10-02 05:44:54,481 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-10-02 05:44:54,731 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-10-02 05:44:54,891 - WDM - INFO - Driver [/home/monsef/.wdm/drivers/chromedriver/linux64/129.0.6668.89/chromedriver-linux64/chromedriver] found in cache
+2024-10-02 05:44:55,474 - __main__ - INFO - Fetching page from: https://miami.craigslist.org/search/msa
+2024-10-02 05:44:55,594 - __main__ - INFO -            
+2024-10-02 05:45:52,761 - __main__ - INFO - ###### BEGIN ######
+2024-10-02 05:45:52,763 - api - INFO - Fetching latest alerts: GET http://localhost:8000/api/alert/list
+2024-10-02 05:45:52,880 - api - INFO - Fetch successful
+2024-10-02 05:45:52,881 - WDM - INFO - ====== WebDriver manager ======
+2024-10-02 05:45:52,992 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-10-02 05:45:53,195 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-10-02 05:45:53,422 - WDM - INFO - Driver [/home/monsef/.wdm/drivers/chromedriver/linux64/129.0.6668.89/chromedriver-linux64/chromedriver] found in cache
+2024-10-02 05:45:54,072 - __main__ - INFO - Fetching page from: https://miami.craigslist.org/search/msa
+2024-10-02 05:45:54,202 - __main__ - INFO - ###### END ######
+2024-10-02 05:45:58,886 - __main__ - INFO - ###### BEGIN ######
+2024-10-02 05:45:58,887 - api - INFO - Fetching latest alerts: GET http://localhost:8000/api/alert/list
+2024-10-02 05:45:58,996 - api - INFO - Fetch successful
+2024-10-02 05:45:58,997 - WDM - INFO - ====== WebDriver manager ======
+2024-10-02 05:45:59,104 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-10-02 05:45:59,360 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-10-02 05:45:59,531 - WDM - INFO - Driver [/home/monsef/.wdm/drivers/chromedriver/linux64/129.0.6668.89/chromedriver-linux64/chromedriver] found in cache
+2024-10-02 05:46:00,205 - __main__ - INFO - Fetching page from: https://miami.craigslist.org/search/msa
+2024-10-02 05:46:00,276 - __main__ - INFO - ###### END ######

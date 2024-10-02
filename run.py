@@ -2,10 +2,10 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
-
+import log
 import logging
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 import clscraper, api
 
@@ -20,7 +20,7 @@ if scraping_list:
 
         for url, alerts in scraping_list.items():
 
-            logging.info(f"Fetching page from: {url}")
+            logger.info(f"Fetching page from: {url}")
 
             clscraper.wait()
 
@@ -30,7 +30,7 @@ if scraping_list:
 
                 for alert in alerts:
 
-                    logging.info(f"Processing Alert ID: {alert['id']}. Name: '{alert['name']}'. Keywords: '{alert['keywords']}'. has_pic: {alert['has_pic']}. Price: [{alert['min_price']} - {alert['max_price']}]")
+                    logger.info(f"Processing Alert ID: {alert['id']}. Name: '{alert['name']}'. Keywords: '{alert['keywords']}'. has_pic: {alert['has_pic']}. Price: [{alert['min_price']} - {alert['max_price']}]")
                     
                     for index, result in enumerate(search_results, 1):
 
@@ -41,7 +41,7 @@ if scraping_list:
                             api.post_result(clscraper.prepare_post(alert, search_result))
 
 else:
-    logging.info('No alerts to process.')            
+    logger.info('No alerts to process.')            
 
                         
 

@@ -21,7 +21,7 @@ def scrape_page(driver, url):
         wait = WebDriverWait(driver, 15)
         return wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, config.CSS_SELECTOR_SEARCH_RESULT)))
     except Exception as e:
-        logger.error(f"Scraping error occurred: {e}")
+        logger.error(f"Scraping error occurred: {e}", exc_info=True)
         return None
         #print(driver.page_source)
 

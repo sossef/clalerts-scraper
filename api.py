@@ -15,7 +15,7 @@ def fetch_scraping_list():
     if response.status_code == 200:
         logger.info('Fetch successful')
         return response.json().get('data', {})
-    logger.error(f"Failed to retrieve data. Status code: {response.status_code}. Message: {response.json().get('message')}")
+    logger.error(f"Failed to retrieve data. Status code: {response.status_code}. Message: {response.json().get('message')}", exc_info=True)
     return None
 
 def post_result(post_data):
@@ -25,4 +25,4 @@ def post_result(post_data):
     if response.status_code == 200 or response.status_code == 201:
         logger.info(response.json().get('message'))
     else:
-        logger.error(f"Failed to create post\nStatus code: {response.status_code}\nMessage: {response.json().get('message')}")
+        logger.error(f"Failed to create post\nStatus code: {response.status_code}\nMessage: {response.json().get('message')}", exc_info=True)
