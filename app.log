@@ -65,3 +65,10 @@
 2024-10-02 05:45:59,531 - WDM - INFO - Driver [/home/monsef/.wdm/drivers/chromedriver/linux64/129.0.6668.89/chromedriver-linux64/chromedriver] found in cache
 2024-10-02 05:46:00,205 - __main__ - INFO - Fetching page from: https://miami.craigslist.org/search/msa
 2024-10-02 05:46:00,276 - __main__ - INFO - ###### END ######
+2024-10-02 05:48:57,868 - api - INFO - Fetching latest alerts: GET http://localhost:8000/api/alert/list
+2024-10-02 05:48:57,951 - api - INFO - Fetch successful
+2024-10-02 05:48:57,963 - WDM - INFO - ====== WebDriver manager ======
+2024-10-02 05:48:58,095 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-10-02 05:48:58,286 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-10-02 05:48:58,499 - WDM - INFO - Driver [/home/monsef/.wdm/drivers/chromedriver/linux64/129.0.6668.89/chromedriver-linux64/chromedriver] found in cache
+2024-10-02 05:48:59,199 - __main__ - INFO - Fetching page from: https://miami.craigslist.org/search/msa
