@@ -11,7 +11,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 def wait():
-    sleep_time = random.randint(1, 10)
+    sleep_time = random.randint(10, 30)
     logger.info(f"Sleeping for {sleep_time} seconds before processing...")
     time.sleep(sleep_time)
 
